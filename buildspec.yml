@@ -3,15 +3,15 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 10
+      nodejs: 12
   pre_build:
     commands:
       # run 'npm install' using versions in package-lock.json
-      - npm ci
+      - yarn install
   build:
     commands:
       # run the build
-      - npm run build
+      - yarn run build
 artifacts:
   files:
     - start-service.sh
