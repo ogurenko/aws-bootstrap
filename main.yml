@@ -190,7 +190,7 @@ Resources:
     Type: AWS::EC2::Instance
     CreationPolicy:
       ResourceSignal:
-        Timeout: PT5M
+        Timeout: PT15M
         Count: 1
     Metadata:
       AWS::CloudFormation::Init:
@@ -226,10 +226,6 @@ Resources:
           # Get latest cfn scripts; https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#cfninit
           yum install -y aws-cfn-bootstrap
 
-          # Have CloudFormation install any files and packages from the metadata
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
-         
-
           cat > /tmp/install_script.sh << EOF
             # START
             echo "Setting up NodeJS Environment"
@@ -261,7 +257,9 @@ Resources:
 
           chown ec2-user:ec2-user /tmp/install_script.sh && chmod a+x /tmp/install_script.sh
           sleep 1; su - ec2-user -c "/tmp/install_script.sh"
-
+          
+          # Have CloudFormation install any files and packages from the metadata
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
           # Signal to CloudFormation that the instance is ready
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
       Tags:

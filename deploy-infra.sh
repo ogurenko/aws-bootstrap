@@ -9,6 +9,8 @@ AWS_ACCOUNT_ID=`aws sts get-caller-identity --profile awsbootstrap \
         --query "Account" --output text`
 CODEPIPELINE_BUCKET="$STACK_NAME-$REGION-codepipeline-$AWS_ACCOUNT_ID"
 
+Echo $CODEPIPELINE_BUCKET
+
 # Generate a personal access token with repo and admin:repo_hook
 #    permissions from https://github.com/settings/tokens
 GH_ACCESS_TOKEN=$(cat ~/.github/aws-bootstrap-access-token)
@@ -45,5 +47,5 @@ aws cloudformation deploy \
 # If the deploy succeeded, show the DNS name of the created instance
 if [ $? -eq 0 ]; then
   aws cloudformation list-exports \
-    --query "Exports[?Name=='InstanceDNS'].Value"
+    --query "Exports[?Name=='InstanceEndpoint'].Value"
 fi 
