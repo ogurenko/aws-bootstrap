@@ -17,7 +17,7 @@ Parameters:
     Description: 'The source GitHub repo name (without the username).'
   GitHubBranch:
     Type: String
-    Default: master
+    Default: main
     Description: 'The source GitHub branch.'
   GitHubPersonalAccessToken:
     Type: String
@@ -198,6 +198,8 @@ Resources:
           packages:
             yum:
                 ruby: []
+                # wget: []
+                # unzip: []
           files:
             /home/ec2-user/install:
               source: !Sub "https://aws-codedeploy-${AWS::Region}.s3.amazonaws.com/latest/install"
